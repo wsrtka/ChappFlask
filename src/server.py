@@ -14,9 +14,9 @@ def hello():
 
 @app.route('/login', methods=['POST'])
 def login():
-    username = request.json['username']
+    username = request.json.get('username', None)
 
-    if username in users:
+    if username in users or username is None:
         abort(403)
 
     else:
