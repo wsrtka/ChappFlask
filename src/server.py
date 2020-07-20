@@ -37,6 +37,12 @@ def send():
     timestamp = datetime.now()
     id = uuid.uuid4()
 
+    if username is None or username not in users:
+        abort(401)
+
+    if message is None:
+        abort(400)
+
     messages[str(id)] = {
         'username': username,
         'message': message,
