@@ -40,7 +40,7 @@ def send():
     if username is None or username not in users:
         abort(401)
 
-    if message is None:
+    if message is None or len(message) == 0:
         abort(400)
 
     messages[str(id)] = {
