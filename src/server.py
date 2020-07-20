@@ -1,4 +1,4 @@
-from flask import Flask, request, abort
+from flask import Flask, request, abort, jsonify
 
 
 app = Flask(__name__)
@@ -21,7 +21,10 @@ def login():
 
     else:
         users.append(username)
-        return 'Login successfull'
+        return jsonify({
+            'status': 'OK',
+            'message': 'Successfully logged in',
+        })
 
 
 if __name__ == '__main__':
