@@ -1,10 +1,13 @@
 from flask import Flask, request, abort, jsonify
+from datetime import datetime
+import uuid
 
 
 app = Flask(__name__)
 
 
 users = []
+messages = dict()
 
 
 @app.route('/')
@@ -25,6 +28,23 @@ def login():
             'status': 'OK',
             'message': 'Successfully logged in',
         })
+
+
+@app.route('/send', methods=['POST'])
+def send():
+    username = request.json.get('username', None)
+    message = request.json.get('message', None)
+    timestamp = datetime.now()
+    id = uuid.uuid4()
+
+    messages[str(id)] = {
+        'username': username,
+        'message': message,
+        'timestamp': timestamp,
+        'id': id
+    }
+
+    return jsonify(messages)
 
 
 if __name__ == '__main__':
