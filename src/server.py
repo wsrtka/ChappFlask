@@ -58,6 +58,9 @@ def send():
 
 @app.route('/get/<last_id>', methods=['GET'])
 def get(last_id):
+
+    if chat is None or len(chat) == 0:
+        return []
     
     index = 0
 
@@ -67,6 +70,12 @@ def get(last_id):
         except ValueError as e:
             abort(400)
             
+    ids_to_return = chat[index:]
+
+    results = map(lambda x: messages[x], ids_to_return)
+
+    return jsonify(list(results))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
