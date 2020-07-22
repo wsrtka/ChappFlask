@@ -36,7 +36,7 @@ def send():
     username = request.json.get('username', None)
     message = request.json.get('message', None)
     timestamp = datetime.now()
-    id = uuid.uuid4()
+    id = str(uuid.uuid4())
 
     if username is None or username not in users:
         abort(401)
@@ -44,7 +44,7 @@ def send():
     if message is None or len(message) == 0:
         abort(400)
 
-    messages[str(id)] = {
+    messages[id] = {
         'username': username,
         'message': message,
         'timestamp': timestamp,
@@ -66,7 +66,7 @@ def get(last_id):
 
     if last_id:
         try:
-            index = chat.index(last_id)
+            index = chat.index(last_id) + 1
         except ValueError as e:
             abort(400)
             
