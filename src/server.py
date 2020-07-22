@@ -65,16 +65,36 @@ def get(last_id):
     index = 0
 
     if last_id:
-        try:
-            index = chat.index(last_id) + 1
-        except ValueError as e:
-            abort(400)
+        index = get_next_index(last_id)
             
     ids_to_return = chat[index:]
 
     results = map(lambda x: messages[x], ids_to_return)
 
     return jsonify(list(results))
+
+
+@app.route('/updates/<last_id>', methods=['GET'])
+def updates(last_id):
+
+    if last_id:
+        index = get_next_index(last_id)
+
+    result = {
+        'new_messages': False
+    }
+
+    if index < len(chat):
+        result['new_messages'] = True
+    
+    return jsonify(result)
+
+
+def get_next_index(last_id):
+    try:
+        return chat.index(last_id) + 1
+    except ValueError as e:
+        abort(400)
 
 
 if __name__ == '__main__':
