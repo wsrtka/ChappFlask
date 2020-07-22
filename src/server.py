@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 
 users = []
+chat = []
 messages = dict()
 
 
@@ -50,8 +51,22 @@ def send():
         'id': id
     }
 
+    chat.append(id)
+
     return jsonify(messages)
 
+
+@app.route('/get/<last_id>', methods=['GET'])
+def get(last_id):
+    
+    index = 0
+
+    if last_id:
+        try:
+            index = chat.index(last_id)
+        except ValueError as e:
+            abort(400)
+            
 
 if __name__ == '__main__':
     app.run(debug=True)
